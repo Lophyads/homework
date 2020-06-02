@@ -1,41 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
-typedef struct node {
-    int coefficient;//系数
-    int index;//指数
-    struct node* next;
-}Node;
-typedef struct list {
-    Node* head;
-    Node* tail;
-}List;
-Node* insert(List* ListNode, int coefficient, int index) {
-    Node* node = (Node*)malloc(sizeof(Node));
-    node->coefficient = coefficient;
-    node->index = index;
-    node->next = NULL;
-    ListNode->tail->next = node;
-    ListNode->tail = node;
-    return ListNode->tail;
-}
-void printList(List* ListNode) {
-    Node* node = ListNode->head->next;
-    if (node == NULL) return;
-    while (node->next != NULL) {
-        printf("%dx^%d + ", node->coefficient, node->index);
-        node = node->next;
-    }
-    printf("%dx^%d", node->coefficient, node->index);
-    printf("\n");
-}
-Node* Split(Node* head, int grep) {
+#include "List.h"
+Node* Split(Node* head, int grep) {//分
     for (int i = 1; head != NULL && i < grep; i++) head = head->next;
     if (head == NULL) return NULL;
     Node* tmp = head->next;
     head->next = NULL;
     return tmp;
 }
-Node* merge(Node* left, Node* right, Node* PreTail) {
+Node* merge(Node* left, Node* right, Node* PreTail) {//治
     Node* cur = PreTail;
     while (left != NULL && right != NULL) {
         if (left->index < right->index) {
@@ -77,12 +50,18 @@ List* add(Node* node1, Node* node2) {
     Node* tail = Head->head;
     while (node1 != NULL && node2 != NULL) {
         if (node1->index < node2->index) {
-            tail->next = node1;
+            Node* tmp = (Node*)malloc(sizeof(Node));
+            tmp->index = node1->index;
+            tmp->coefficient = node1->coefficient;
+            tail->next = tmp;
             tail = tail->next;
             node1 = node1->next;
         }
         else if (node2->index < node1->index) {
-            tail->next = node2;
+            Node* tmp = (Node*)malloc(sizeof(Node));
+            tmp->index = node2->index;
+            tmp->coefficient = node2->coefficient;
+            tail->next = tmp;
             tail = tail->next;
             node2 = node2->next;
         }
@@ -162,8 +141,14 @@ int main() {
     printList(list1);
     printf("q(x) = ");
     printList(list2);
-    List* list3 = add(list1->head, list2->head);
-    List* list4 = Subtraction(list1->head,list2->head);
+    List* list3 = add(list1->head->next, list2->head->next);
+    List* list4 = Subtraction(list1->head->next,list2->head->next);
+    printf("p(x) + q(x) = ");
     printList(list3);
+    printf("p(x) - q(x) = ");
     printList(list4);
+    DeleteList(list1);
+    DeleteList(list2);
+    DeleteList(list3);
+    DeleteList(list4);
 }
