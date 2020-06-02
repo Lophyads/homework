@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "List.h"
-Node* Split(Node* head, int grep) {//分
-    for (int i = 1; head != NULL && i < grep; i++) head = head->next;
+Node* Split(Node* head, int grep) {
+    for (int i = 1; head != NULL && i < grep; i++) head = head->next;//head走到分割点
     if (head == NULL) return NULL;
     Node* tmp = head->next;
-    head->next = NULL;
-    return tmp;
+    head->next = NULL;//把末尾与其他部分砍断
+    return tmp;//返回分割后剩下部分链表的开头
 }
-Node* merge(Node* left, Node* right, Node* PreTail) {//治
+Node* merge(Node* left, Node* right, Node* PreTail) {//归并
     Node* cur = PreTail;
     while (left != NULL && right != NULL) {
         if (left->index < right->index) {
@@ -29,7 +29,7 @@ Node* merge(Node* left, Node* right, Node* PreTail) {//治
 void sort(List* ListNode) {
     Node* tmp = ListNode->head->next;
     int len = 0;
-    while (tmp != NULL) {
+    while (tmp != NULL) {//获得链表长度
         tmp = tmp->next;
         len++;
     }
@@ -37,14 +37,14 @@ void sort(List* ListNode) {
         Node* cur = ListNode->head->next;
         Node* tail = ListNode->head;
         while (cur != NULL) {
-            Node* left = cur;
-            Node* right = Split(left, grep);
-            cur = Split(right, grep);
-            tail = merge(left, right, tail);
+            Node* left = cur;//left指向第一段链表的开头
+            Node* right = Split(left, grep);//从left位置开始分割grep长度,right指向第二段链表的开头
+            cur = Split(right, grep);//从right位置开始分割grep长度
+            tail = merge(left, right, tail);//将两段链表归并
         }
     }
 }
-List* add(Node* node1, Node* node2) {
+List* add(Node* node1, Node* node2) {//加法
     List* Head = (List*)calloc(1, sizeof(List));
     Head->head = (Node*)calloc(1, sizeof(Node));
     Node* tail = Head->head;
@@ -79,19 +79,24 @@ List* add(Node* node1, Node* node2) {
     tail->next = node1 != NULL ? node1 : node2;
     return Head;
 }
-List* Subtraction(Node* node1, Node* node2) {
+List* Subtraction(Node* node1, Node* node2) {//减法
     List* Head = (List*)calloc(1, sizeof(List));
     Head->head = (Node*)calloc(1, sizeof(Node));
     Node* tail = Head->head;
     while (node1 != NULL && node2 != NULL) {
         if (node1->index < node2->index) {
-            tail->next = node1;
+            Node* tmp = (Node*)malloc(sizeof(Node));
+            tmp->index = node1->index;
+            tmp->coefficient = node1->coefficient;
+            tail->next = tmp;
             tail = tail->next;
             node1 = node1->next;
         }
         else if (node2->index < node1->index) {
-            tail->next = node2;
-            tail = tail->next;
+            Node* tmp = (Node*)malloc(sizeof(Node));
+            tmp->index = node2->index;
+            tmp->coefficient = node2->coefficient;
+            tail->next = tmp;
             node2 = node2->next;
         }
         else {
@@ -141,7 +146,7 @@ int main() {
     printList(list1);
     printf("q(x) = ");
     printList(list2);
-    List* list3 = add(list1->head->next, list2->head->next);
+    List* list3 = add(list1->head->next, list2->head->next);//创建链表是head为空节点,所以传入head->next;
     List* list4 = Subtraction(list1->head->next,list2->head->next);
     printf("p(x) + q(x) = ");
     printList(list3);
