@@ -1,5 +1,5 @@
 #include "BinaryTree.h"
-TreeNode* BuildTree(char* str, int l, int r){//通过中序遍历建立二叉树
+TreeNode* BuildTree(char* str, int l, int r){//通过二分建立二叉树
     if(l > r) return NULL;
     int mid = l + (r - l) / 2;
     TreeNode* node = (TreeNode*)calloc(1,sizeof(TreeNode));
@@ -43,7 +43,7 @@ void Travel(TreeNode* node){//先序遍历获得树中的叶子节点和非叶�
     Travel(node->right);
 }
 int main(){
-    char* s = "ABCDEFGHIJK";
+    char* s = "ABCEGHJKLNPQRTZ";
     TreeNode* root = BuildTree(s, 0, (int)strlen(s));
     printf("后序遍历序列为: ");
     PostOrder(root);
