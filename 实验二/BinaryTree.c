@@ -18,15 +18,17 @@ void LevelOrder(TreeNode* root){//层次遍历
     push(root);
     while(!is_empty()){
         TreeNode* top = pop();
+        //把当前节点的左右儿子(若不为NULL)压入队列中
         if(top->left) push(top->left);
         if(top->right) push(top->right);
-        printf("%c",top->val);
+        printf("%c",top->val);//打印当前节点
     }
 }
 int depth(TreeNode* root){//求树的深度
     if(root == NULL) return 0;
     int l = depth(root->left);
     int r = depth(root->right);
+    //#define max(x,y) x > y ? x : y
     int res = max(l, r) + 1;
     return res;
 }
