@@ -1,5 +1,5 @@
-#ifndef ALGORITHM_MY_QUEUE_H
-#define ALGORITHM_MY_QUEUE_H
+#ifndef CLION_MY_QUEUE_H
+#define CLION_MY_QUEUE_H
 #define Size 100
 #define T char
 static T my_queue[Size];
@@ -34,4 +34,4 @@ T pop(){
 int size(){
     return (back + Size - front) % Size;
 }
-#endif //ALGORITHM_MY_QUEUE_H
+#endif //CLION_MY_QUEUE_H
